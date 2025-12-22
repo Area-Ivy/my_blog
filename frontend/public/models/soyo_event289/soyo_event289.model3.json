@@ -1,0 +1,59 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "soyo_event289.moc",
+		"Textures": [
+			"texture_00.png",
+			"texture_01.png"
+		],
+		"Physics": "soyo_event289.physics.json",
+		"Motions": {
+			"Idle": [
+				{
+					"File": "idle01.mtn"
+				}
+			],
+			"TapBody": [
+				{
+					"File": "smile01.mtn"
+				},
+				{
+					"File": "smile02.mtn"
+				}
+			],
+			"TapHead": [
+				{
+					"File": "wink01.mtn"
+				}
+			]
+		}
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": [
+				"ParamEyeLOpen",
+				"ParamEyeROpen"
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": [
+				"ParamMouthOpenY"
+			]
+		}
+	],
+	"HitAreas": [
+		{
+			"Name": "Head",
+			"Id": "HitArea"
+		},
+		{
+			"Name": "Body",
+			"Id": "HitArea"
+		}
+	]
+}
+
