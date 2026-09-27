@@ -6,7 +6,6 @@ import Tools from '@/views/Tools.vue';
 import About from '@/views/About.vue';
 import Footprints from '@/views/Footprints.vue';
 import AppPage from '@/views/App.vue';
-import Console from '@/views/Console.vue';
 
 const routes = [
   { path: '/', name: 'Welcome', component: Welcome, meta: { keepAlive: false } },
@@ -17,7 +16,7 @@ const routes = [
   { path: '/tools', name: 'Tools', component: Tools },
   { path: '/about', name: 'About', component: About },
   { path: '/app', name: 'App', component: AppPage },
-  { path: '/65472console', name: 'Console', component: Console, meta: { keepAlive: false } },
+  { path: '/65472console', redirect: '/posts' },
 ];
 
 const router = createRouter({

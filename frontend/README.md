@@ -1,38 +1,10 @@
-# Frontend (moved into `frontend/`)
+# 博客前端
 
-This is your existing Vue 3 + Vite app moved under the `frontend` folder, now integrated with the FastAPI backend.
+此目录是一个可独立构建的纯静态 Vue 3 应用，运行时不会请求博客后端。
 
-## Run
-
-1) Install deps (from `frontend`):
-```
-cd frontend
-npm install
-```
-
-2) Start dev server:
-```
+```bash
+npm ci
 npm run dev
 ```
 
-It runs at http://localhost:5173
-
-## Backend API
-
-Ensure the FastAPI backend is running at http://localhost:8000 (default).
-
-The frontend fetches articles from:
-- `GET http://localhost:8000/api/articles?q=...`
-
-You can override API base via `.env`:
-```
-# frontend/.env
-VITE_API_BASE=http://localhost:8000
-```
-
-
-
-
-
-
-
+内容编辑、构建和部署方式请查看仓库根目录的 `README.md`。

@@ -82,15 +82,15 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import SiteHeader from '@/components/SiteHeader.vue';
 import SideNav from '@/components/SideNav.vue';
 import ClientOnly from '@/components/ClientOnly.vue';
 import BlurReveal from '@/components/BlurReveal.vue';
-import { API_BASE } from '@/lib/utils';
+import { tools as staticTools } from '@/lib/content';
 
-const tools = ref([]);
-const loading = ref(true);
+const tools = ref(staticTools);
+const loading = ref(false);
 const errorMessage = ref('');
 
 const parseTags = value => {
@@ -101,28 +101,7 @@ const parseTags = value => {
 		.filter(Boolean);
 };
 
-const fetchTools = async () => {
-	loading.value = true;
-	errorMessage.value = '';
-	try {
-		const url = new URL('/api/tools', API_BASE);
-		const res = await fetch(url.toString());
-		if (!res.ok) throw new Error('加载工具数据失败');
-		const data = await res.json();
-		tools.value = (data || []).map(tool => ({
-			...tool,
-			tags: parseTags(tool.tags),
-		}));
-	} catch (error) {
-		console.error(error);
-		errorMessage.value = error.message || '加载工具失败，请稍后重试。';
-		tools.value = [];
-	} finally {
-		loading.value = false;
-	}
-};
-
-onMounted(fetchTools);
+tools.value = tools.value.map(tool => ({ ...tool, tags: parseTags(tool.tags) }));
 
 const handleNavigate = (link) => {
 	if (!link) return;
@@ -132,5 +111,4 @@ const handleNavigate = (link) => {
 
 <style scoped>
 </style>
-
 

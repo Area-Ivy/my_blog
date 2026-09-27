@@ -1,0 +1,85 @@
+[
+  {
+    "id": "ai-lab",
+    "name": "Inspire UI",
+    "tags": [
+      "组件库",
+      "前端",
+      "UI"
+    ],
+    "description": "基于 Vue3 和 Tailwind 的组件库，提供丰富的动态 UI 组件。",
+    "logo": "/media/tools/ai-lab.png",
+    "link": "https://inspira-ui.com/",
+    "created_at": "2025-11-14T18:13:12",
+    "updated_at": "2025-11-14T21:21:09"
+  },
+  {
+    "id": "apex",
+    "name": "Supabase",
+    "tags": [
+      "数据库",
+      "后端",
+      "API"
+    ],
+    "description": "可视化调试 REST 与 GraphQL 接口，支持实时数据库操作。",
+    "logo": "/media/tools/apex.png",
+    "link": "https://supabase.com/",
+    "created_at": "2025-11-14T18:13:12",
+    "updated_at": "2025-11-14T20:44:22"
+  },
+  {
+    "id": "chrono",
+    "name": "Iconfont",
+    "tags": [
+      "图标",
+      "矢量资源",
+      "设计工具"
+    ],
+    "description": "提供海量矢量图标和图标管理服务，支持在线编辑、字体生成与团队协作。",
+    "logo": "/media/tools/chrono.png",
+    "link": "https://www.iconfont.cn/",
+    "created_at": "2025-11-14T18:13:12",
+    "updated_at": "2025-11-14T20:43:13"
+  },
+  {
+    "id": "colors",
+    "name": "Bonsai",
+    "tags": [
+      "Elasticsearch",
+      "云服务"
+    ],
+    "description": "提供 Elasticsearch 托管服务，支持云端部署、自动扩展与高可用搜索集群管理。",
+    "logo": "/media/tools/colors.png",
+    "link": "https://bonsai.io/",
+    "created_at": "2025-11-14T18:13:12",
+    "updated_at": "2025-11-14T20:44:39"
+  },
+  {
+    "id": "markdown",
+    "name": "Echarts",
+    "tags": [
+      "数据可视化",
+      "图表",
+      "统计分析"
+    ],
+    "description": "提供强大的图表绘制能力，支持多种图表类型、交互式数据展示和可定制配置。",
+    "logo": "/media/tools/markdown.png",
+    "link": "https://echarts.apache.org/",
+    "created_at": "2025-11-14T18:13:12",
+    "updated_at": "2025-11-14T20:43:13"
+  },
+  {
+    "id": "svg-play",
+    "name": "Element-Plus",
+    "tags": [
+      "前端组件",
+      "UI框架",
+      "Vue3"
+    ],
+    "description": "基于 Vue3 的组件库，提供丰富 UI 组件，支持响应式布局、表单、弹窗及动画效果。",
+    "logo": "/media/tools/svg-play.png",
+    "link": "https://element-plus.org/",
+    "created_at": "2025-11-14T18:13:12",
+    "updated_at": "2025-11-14T20:43:13"
+  }
+]

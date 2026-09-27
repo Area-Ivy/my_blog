@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "name": "輪符雨",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/1-audio.mp3",
+    "cover": "/media/music/1-cover.png",
+    "created_at": "2025-11-13T13:07:06",
+    "updated_at": "2025-11-13T22:40:56"
+  },
+  {
+    "id": 2,
+    "name": "無路矢",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/2-audio.mp3",
+    "cover": "/media/music/2-cover.png",
+    "created_at": "2025-11-13T13:07:06",
+    "updated_at": "2025-11-13T22:40:56"
+  },
+  {
+    "id": 3,
+    "name": "影色舞",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/3-audio.mp3",
+    "cover": "/media/music/3-cover.png",
+    "created_at": "2025-11-13T13:07:06",
+    "updated_at": "2025-11-13T22:40:56"
+  },
+  {
+    "id": 4,
+    "name": "名無声",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/4-audio.mp3",
+    "cover": "/media/music/4-cover.png",
+    "created_at": "2025-11-13T22:15:10",
+    "updated_at": "2025-11-13T22:40:56"
+  },
+  {
+    "id": 5,
+    "name": "迷星叫",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/5-audio.mp3",
+    "cover": "/media/music/5-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  },
+  {
+    "id": 6,
+    "name": "潜在表明",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/6-audio.mp3",
+    "cover": "/media/music/6-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  },
+  {
+    "id": 7,
+    "name": "音一会",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/7-audio.mp3",
+    "cover": "/media/music/7-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  },
+  {
+    "id": 8,
+    "name": "栞",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/8-audio.mp3",
+    "cover": "/media/music/8-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  },
+  {
+    "id": 9,
+    "name": "焚音打",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/9-audio.mp3",
+    "cover": "/media/music/9-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  },
+  {
+    "id": 10,
+    "name": "碧天伴走",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/10-audio.mp3",
+    "cover": "/media/music/10-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  },
+  {
+    "id": 11,
+    "name": "詩超絆",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/11-audio.mp3",
+    "cover": "/media/music/11-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  },
+  {
+    "id": 12,
+    "name": "迷路日々",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/12-audio.mp3",
+    "cover": "/media/music/12-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  },
+  {
+    "id": 13,
+    "name": "処救生",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/13-audio.mp3",
+    "cover": "/media/music/13-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  },
+  {
+    "id": 14,
+    "name": "砂寸奏",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/14-audio.mp3",
+    "cover": "/media/music/14-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  },
+  {
+    "id": 15,
+    "name": "回層浮",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/15-audio.mp3",
+    "cover": "/media/music/15-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  },
+  {
+    "id": 16,
+    "name": "端程山",
+    "artist": "It‘s MyGO!!!!!",
+    "url": "/media/music/16-audio.mp3",
+    "cover": "/media/music/16-cover.png",
+    "created_at": "2025-11-14T16:38:39",
+    "updated_at": "2025-11-14T16:43:28"
+  }
+]

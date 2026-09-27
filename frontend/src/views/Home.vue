@@ -158,9 +158,8 @@
 										<h3 class="text-lg font-semibold">架构设计</h3>
 									</div>
 									<p class="text-white/70 text-sm leading-relaxed">
-										采用前后端分离架构，前端使用 Vue 3 + Vite 构建单页应用，后端基于 FastAPI 提供 RESTful API。
-										数据持久化使用 MySQL 数据库，全文搜索功能由 OpenSearch 提供支持，并通过RabbitMQ进行事件异步更新。
-										部署采用 Docker 容器化方案，使用 Nginx 作为反向代理和静态资源服务器。
+										采用 Vue 3 + Vite 构建纯静态单页应用。文章以 Markdown 保存，工具、足迹和播放列表使用 JSON 管理，
+										搜索直接在浏览器中完成，并由 Cloudflare Pages 自动构建和发布，无需常驻服务器与数据库。
 									</p>
 								</div>
 							</div>
@@ -203,21 +202,20 @@
 												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path>
 											</svg>
 										</div>
-										<h3 class="text-lg font-semibold">后端技术栈</h3>
+									<h3 class="text-lg font-semibold">内容管理</h3>
 									</div>
 									<div class="space-y-3">
 										<div class="flex items-center gap-2 flex-wrap">
-											<span class="text-xs px-2 py-1 rounded-md bg-orange-500/10 text-orange-400 border border-orange-500/20">FastAPI</span>
-											<span class="text-xs px-2 py-1 rounded-md bg-orange-500/10 text-orange-400 border border-orange-500/20">Uvicorn</span>
-											<span class="text-xs px-2 py-1 rounded-md bg-orange-500/10 text-orange-400 border border-orange-500/20">Pydantic</span>
+											<span class="text-xs px-2 py-1 rounded-md bg-orange-500/10 text-orange-400 border border-orange-500/20">Markdown</span>
+											<span class="text-xs px-2 py-1 rounded-md bg-orange-500/10 text-orange-400 border border-orange-500/20">JSON</span>
+											<span class="text-xs px-2 py-1 rounded-md bg-orange-500/10 text-orange-400 border border-orange-500/20">Git</span>
 										</div>
 										<div class="flex items-center gap-2 flex-wrap">
-											<span class="text-xs px-2 py-1 rounded-md bg-red-500/10 text-red-400 border border-red-500/20">SQLAlchemy</span>
-											<span class="text-xs px-2 py-1 rounded-md bg-red-500/10 text-red-400 border border-red-500/20">PyMySQL</span>
+											<span class="text-xs px-2 py-1 rounded-md bg-red-500/10 text-red-400 border border-red-500/20">Frontmatter</span>
+											<span class="text-xs px-2 py-1 rounded-md bg-red-500/10 text-red-400 border border-red-500/20">Marked</span>
 										</div>
 										<div class="flex items-center gap-2 flex-wrap">
-											<span class="text-xs px-2 py-1 rounded-md bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">Elasticsearch</span>
-											<span class="text-xs px-2 py-1 rounded-md bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">Cryptography</span>
+											<span class="text-xs px-2 py-1 rounded-md bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">浏览器端搜索</span>
 										</div>
 									</div>
 								</div>
@@ -234,19 +232,13 @@
 									</div>
 									<div class="space-y-2">
 										<div class="flex items-center gap-2">
-											<span class="text-xs px-2 py-1 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">MySQL</span>
-											<span class="text-white/60 text-xs">关系型数据库，存储文章、工具、足迹等结构化数据</span>
+											<span class="text-xs px-2 py-1 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">GitHub</span>
+											<span class="text-white/60 text-xs">版本管理文章、工具、足迹和静态资源</span>
 										</div>
 										<div class="flex items-center gap-2">
-											<span class="text-xs px-2 py-1 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Elasticsearch</span>
-											<span class="text-white/60 text-xs">分布式搜索引擎，提供全文检索功能</span>
+											<span class="text-xs px-2 py-1 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">静态资源</span>
+											<span class="text-white/60 text-xs">随构建产物发布，无需独立数据库和对象存储</span>
 										</div>
-										<!--
-										<div class="flex items-center gap-2">
-											<span class="text-xs px-2 py-1 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">RabbitMQ</span>
-											<span class="text-white/60 text-xs">消息队列，用于事件异步通信</span>
-										</div>
-										-->
 									</div>
 								</div>
 
@@ -262,12 +254,12 @@
 									</div>
 									<div class="space-y-2">
 										<div class="flex items-center gap-2">
-											<span class="text-xs px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Docker</span>
-											<span class="text-white/60 text-xs">容器化部署，环境隔离与快速部署</span>
+											<span class="text-xs px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Cloudflare Pages</span>
+											<span class="text-white/60 text-xs">Git 推送后自动构建并部署到全球网络</span>
 										</div>
 										<div class="flex items-center gap-2">
-											<span class="text-xs px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Nginx</span>
-											<span class="text-white/60 text-xs">反向代理，负载均衡与静态资源服务</span>
+											<span class="text-xs px-2 py-1 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">自动 HTTPS</span>
+											<span class="text-white/60 text-xs">自定义域名、证书与 CDN 均由平台托管</span>
 										</div>
 									</div>
 								</div>
@@ -338,14 +330,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import SiteHeader from '@/components/SiteHeader.vue';
 import SideNav from '@/components/SideNav.vue';
 import ClientOnly from '@/components/ClientOnly.vue';
 import BlurReveal from '@/components/BlurReveal.vue';
 import InteractiveHoverButton from '@/components/InteractiveHoverButton.vue';
 import { useRouter } from 'vue-router';
-import { API_BASE } from '@/lib/utils';
+import { articles, tools, footprints } from '@/lib/content';
 
 const router = useRouter();
 const goTo = (path) => {
@@ -360,141 +352,13 @@ const goToArticle = (articleId) => {
 };
 
 const stats = ref({
-	articles: 0,
-	tools: 0,
-	footprints: 0,
-	lastUpdate: '--'
+	articles: articles.length,
+	tools: tools.length,
+	footprints: footprints.length,
+	lastUpdate: articles[0]?.date || '--'
 });
 
-const recommendedArticles = ref([]);
-
-async function loadStats() {
-	try {
-		// 分页获取所有文章以准确计算总数
-		let allArticles = [];
-		let page = 1;
-		const pageSize = 100; // 后端API的最大限制
-		let hasMore = true;
-		
-		while (hasMore) {
-			const url = new URL('/api/articles', API_BASE);
-			url.searchParams.set('page', page.toString());
-			url.searchParams.set('page_size', pageSize.toString());
-			
-			const res = await fetch(url.toString());
-			if (!res.ok) break;
-			
-			const data = await res.json();
-			if (data && data.length > 0) {
-				allArticles = allArticles.concat(data);
-				// 如果返回的数据少于pageSize，说明已经是最后一页
-				if (data.length < pageSize) {
-					hasMore = false;
-				} else {
-					page++;
-				}
-			} else {
-				hasMore = false;
-			}
-		}
-		
-		// 设置文章总数
-		stats.value.articles = allArticles.length;
-		
-		// 找到最新的更新时间
-		if (allArticles.length > 0) {
-			const latestUpdate = allArticles.reduce((latest, article) => {
-				const updateTime = article.updated_at ? new Date(article.updated_at) : null;
-				if (!updateTime) return latest;
-				if (!latest || updateTime > latest) {
-					return updateTime;
-				}
-				return latest;
-			}, null);
-			
-			if (latestUpdate) {
-				// 格式化日期为 YYYY-MM-DD
-				const year = latestUpdate.getFullYear();
-				const month = String(latestUpdate.getMonth() + 1).padStart(2, '0');
-				const day = String(latestUpdate.getDate()).padStart(2, '0');
-				stats.value.lastUpdate = `${year}-${month}-${day}`;
-			}
-		}
-	} catch (e) {
-		console.error('加载统计数据失败:', e);
-	}
-	
-	// 从后端获取工具数量
-	try {
-		const toolsUrl = new URL('/api/tools', API_BASE);
-		const toolsRes = await fetch(toolsUrl.toString());
-		if (toolsRes.ok) {
-			const toolsData = await toolsRes.json();
-			stats.value.tools = toolsData ? toolsData.length : 0;
-		} else {
-			stats.value.tools = 0;
-		}
-	} catch (e) {
-		console.error('加载工具统计数据失败:', e);
-		stats.value.tools = 0;
-	}
-	
-	// 从后端获取足迹数量
-	try {
-		const footprintsUrl = new URL('/api/footprints/count', API_BASE);
-		const footprintsRes = await fetch(footprintsUrl.toString());
-		if (footprintsRes.ok) {
-			const footprintsData = await footprintsRes.json();
-			stats.value.footprints = footprintsData?.count || 0;
-		} else {
-			stats.value.footprints = 0;
-		}
-	} catch (e) {
-		console.error('加载足迹统计数据失败:', e);
-		stats.value.footprints = 0;
-	}
-}
-
-async function loadRecommendedArticles() {
-	try {
-		const url = new URL('/api/articles', API_BASE);
-		url.searchParams.set('page', '1');
-		url.searchParams.set('page_size', '100'); // 获取足够多的文章以便排序
-		
-		const res = await fetch(url.toString());
-		if (res.ok) {
-			const data = await res.json();
-			// 按修改日期降序排序
-			const sortedData = (data || []).sort((a, b) => {
-				const dateA = a.updated_at ? new Date(a.updated_at) : new Date(0);
-				const dateB = b.updated_at ? new Date(b.updated_at) : new Date(0);
-				return dateB - dateA; // 降序
-			});
-			// 取前3篇
-			recommendedArticles.value = sortedData.slice(0, 3).map((a) => {
-				const tags = (a.tags || '')
-					.split(',')
-					.map(t => t.trim())
-					.filter(Boolean);
-				return {
-					id: a.id,
-					title: a.title || '未命名文章',
-					slug: a.slug || '',
-					date: (a.updated_at || '').slice(0, 10),
-					tags,
-					excerpt: a.summary || ''
-				};
-			});
-		}
-	} catch (e) {
-		console.error('加载推荐文章失败:', e);
-	}
-}
-
-onMounted(() => {
-	loadStats();
-	loadRecommendedArticles();
-});
+const recommendedArticles = ref(articles.slice(0, 3));
 </script>
 
 <style scoped>
@@ -555,6 +419,3 @@ onMounted(() => {
 	overflow: hidden;
 }
 </style>
-
-
-

@@ -191,7 +191,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, onActivated, onDeactivated, watch } from 'vue';
 
-import { API_BASE } from '@/lib/utils';
+import { songs } from '@/lib/content';
 
 // 从 localStorage 恢复状态的辅助函数
 const loadState = () => {
@@ -239,44 +239,16 @@ const saveState = () => {
 };
 
 // 播放列表（从后端API获取）
-const playlist = ref([]);
+const playlist = ref(songs);
 const loadingSongs = ref(false);
 const songsError = ref('');
 
 // 从后端加载歌曲列表
 const loadSongs = async () => {
-	try {
-		loadingSongs.value = true;
-		songsError.value = '';
-		const url = new URL('/api/songs', API_BASE);
-		const res = await fetch(url.toString());
-		if (!res.ok) {
-			throw new Error('加载歌曲列表失败');
-		}
-		const data = await res.json();
-		playlist.value = (data || []).map(song => ({
-			id: song.id,
-			name: song.name,
-			artist: song.artist,
-			url: song.url,
-			cover: song.cover
-		}));
-		
-		// 如果之前有保存的 currentIndex，确保它在有效范围内
-		if (playlist.value.length > 0) {
-			const savedState = loadState();
-			if (savedState.currentIndex >= playlist.value.length) {
-				currentIndex.value = 0;
-			}
-		}
-	} catch (e) {
-		console.error('加载歌曲失败:', e);
-		songsError.value = '加载歌曲列表失败，请稍后重试';
-		// 如果加载失败，使用空列表，避免播放器出错
-		playlist.value = [];
-	} finally {
-		loadingSongs.value = false;
-	}
+	loadingSongs.value = false;
+	songsError.value = '';
+	const savedState = loadState();
+	if (savedState.currentIndex >= playlist.value.length) currentIndex.value = 0;
 };
 
 // 从 localStorage 恢复状态

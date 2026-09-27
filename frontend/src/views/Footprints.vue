@@ -189,10 +189,10 @@ import SideNav from '@/components/SideNav.vue';
 import ClientOnly from '@/components/ClientOnly.vue';
 import BlurReveal from '@/components/BlurReveal.vue';
 import ExpandableGallery from '@/components/ExpandableGallery.vue';
-import { API_BASE } from '@/lib/utils';
+import { footprints as staticFootprints } from '@/lib/content';
 
-const footprints = ref([]);
-const loading = ref(true);
+const footprints = ref(staticFootprints);
+const loading = ref(false);
 const errorMessage = ref('');
 const imageModal = ref({
 	visible: false,
@@ -272,24 +272,6 @@ watch(orderedItemIds, () => {
 	completedItemIds.value = [];
 });
 
-async function loadFootprints() {
-	loading.value = true;
-	errorMessage.value = '';
-	try {
-		const url = new URL('/api/footprints', API_BASE);
-		const res = await fetch(url.toString());
-		if (!res.ok) throw new Error('加载足迹数据失败');
-		const data = await res.json();
-		footprints.value = data || [];
-	} catch (error) {
-		console.error(error);
-		errorMessage.value = error.message || '加载足迹失败，请稍后重试。';
-		footprints.value = [];
-	} finally {
-		loading.value = false;
-	}
-}
-
 function openImageModal(image, allImages) {
 	imageModal.value.currentImage = image;
 	imageModal.value.allImages = allImages;
@@ -329,7 +311,6 @@ function handleKeydown(e) {
 }
 
 onMounted(() => {
-	loadFootprints();
 	window.addEventListener('keydown', handleKeydown);
 });
 
@@ -372,5 +353,4 @@ onUnmounted(() => {
 	background: rgba(255, 255, 255, 0.3);
 }
 </style>
-
 

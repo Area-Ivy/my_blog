@@ -177,7 +177,7 @@ import SiteHeader from '@/components/SiteHeader.vue';
 import SideNav from '@/components/SideNav.vue';
 import ClientOnly from '@/components/ClientOnly.vue';
 import BlurReveal from '@/components/BlurReveal.vue';
-import { API_BASE } from '@/lib/utils';
+import { articles, searchArticles as searchLocalArticles } from '@/lib/content';
 
 const route = useRoute();
 
@@ -190,96 +190,22 @@ const showSearchResults = ref(false);
 let searchTimeout = null;
 
 // 加载所有文章（用于右侧目录）
-async function loadAllArticles() {
-	try {
-		errorMessage.value = '';
-		const url = new URL('/api/articles', API_BASE);
-		url.searchParams.set('page', '1');
-		url.searchParams.set('page_size', '100'); // 获取足够多的文章以便排序
-		const res = await fetch(url.toString());
-		if (!res.ok) throw new Error('加载文章失败');
-		const data = await res.json();
-		// 按修改日期降序排序
-		const sortedData = (data || []).sort((a, b) => {
-			const dateA = a.updated_at ? new Date(a.updated_at) : new Date(0);
-			const dateB = b.updated_at ? new Date(b.updated_at) : new Date(0);
-			return dateB - dateA; // 降序
-		});
-		allPosts.value = sortedData.map((a, idx) => {
-			const tags = (a.tags || '')
-				.split(',')
-				.map(t => t.trim())
-				.filter(Boolean);
-			return {
-				id: a.id ?? idx + 1,
-				title: a.title || '未命名文章',
-				slug: a.slug || '',
-				date: (a.updated_at || '').slice(0, 10),
-				created_at: a.created_at || '',
-				updated_at: a.updated_at || '',
-				views: 0,
-				tags,
-				content: '',
-				summary: a.summary || '',
-				excerpt: a.summary || ''
-			};
-		});
-		// 检查 URL 查询参数，如果有 id 就选择对应文章
-		checkAndSelectArticle();
-	} catch (e) {
-		console.error(e);
-		errorMessage.value = '获取文章失败：' + (e?.message || '未知错误');
-	}
+function loadAllArticles() {
+	allPosts.value = articles;
+	checkAndSelectArticle();
 }
 
 // 搜索文章
-async function searchArticles(query = '') {
+function searchArticles(query = '') {
 	if (!query || !query.trim()) {
 		searchResults.value = [];
 		return;
 	}
 	
-	try {
-		loading.value = true;
-		errorMessage.value = '';
-		const url = new URL('/api/articles', API_BASE);
-		url.searchParams.set('q', query.trim());
-		const res = await fetch(url.toString());
-		if (!res.ok) throw new Error('搜索文章失败');
-		const data = await res.json();
-		// 按修改日期降序排序搜索结果
-		const sortedData = (data || []).sort((a, b) => {
-			const dateA = a.updated_at ? new Date(a.updated_at) : new Date(0);
-			const dateB = b.updated_at ? new Date(b.updated_at) : new Date(0);
-			return dateB - dateA; // 降序
-		});
-		searchResults.value = sortedData.map((a, idx) => {
-			const tags = (a.tags || '')
-				.split(',')
-				.map(t => t.trim())
-				.filter(Boolean);
-			return {
-				id: a.id ?? idx + 1,
-				title: a.title || '未命名文章',
-				slug: a.slug || '',
-				date: (a.updated_at || '').slice(0, 10),
-				created_at: a.created_at || '',
-				updated_at: a.updated_at || '',
-				views: 0,
-				tags,
-				content: '',
-				summary: a.summary || '',
-				excerpt: a.summary || '',
-				highlight: a.highlight || ''
-			};
-		});
-	} catch (e) {
-		console.error(e);
-		errorMessage.value = '搜索文章失败：' + (e?.message || '未知错误');
-		searchResults.value = [];
-	} finally {
-		loading.value = false;
-	}
+	loading.value = true;
+	errorMessage.value = '';
+	searchResults.value = searchLocalArticles(query);
+	loading.value = false;
 }
 
 // 处理搜索输入（防抖）
@@ -394,37 +320,8 @@ const readingTime = computed(() => {
 });
 
 const selectedPost = ref(null);
-const loadingDetail = ref(false);
-const selectPost = async (post) => {
+const selectPost = (post) => {
 	selectedPost.value = { ...post };
-	if (!selectedPost.value.content) {
-		try {
-			loadingDetail.value = true;
-			errorMessage.value = '';
-			const detailUrl = new URL(`/api/articles/${post.id}`, API_BASE);
-			const res = await fetch(detailUrl.toString());
-			if (!res.ok) throw new Error('加载文章详情失败');
-			const detail = await res.json();
-			selectedPost.value = {
-				...selectedPost.value,
-				content: detail.content || '',
-				created_at: detail.created_at || '',
-				updated_at: detail.updated_at || '',
-				date: (detail.updated_at || '').slice(0, 10),
-				tags: (detail.tags || '')
-					.split(',')
-					.map(t => t.trim())
-					.filter(Boolean),
-				summary: detail.summary || '',
-				excerpt: detail.summary || detail.excerpt || ''
-			};
-		} catch (e) {
-			console.error(e);
-			errorMessage.value = e?.message || '加载文章详情失败';
-		} finally {
-			loadingDetail.value = false;
-		}
-	}
 };
 
 // 检查并选择文章
@@ -895,5 +792,3 @@ onBeforeUnmount(() => {
 	gap: 4px;
 }
 </style>
-
-
