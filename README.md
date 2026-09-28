@@ -34,6 +34,16 @@ npm run preview
 
 `frontend/public/_redirects` 已处理 Vue Router 的页面刷新规则，不需要配置 Nginx。
 
+### 新版 Workers Builds 界面
+
+如果创建页面只显示 Build、Deploy 和 Preview command，请使用仓库根目录的 `wrangler.jsonc`，配置如下：
+
+- Build command：`npm --prefix frontend ci && npm --prefix frontend run build`
+- Deploy command：`npx wrangler deploy`
+- Preview command：`npx wrangler preview`
+
+项目名称需要保持为 `area-ivy-blog`。`wrangler.jsonc` 已将 `frontend/dist` 配置为静态资源目录，并为 Vue Router 开启 SPA 回退。
+
 ## 发布文章
 
 在 `frontend/src/content/articles/` 新建 Markdown 文件：
