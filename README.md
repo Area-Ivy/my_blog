@@ -32,7 +32,7 @@ npm run preview
 4. 部署完成后，在项目的 **Custom domains** 中添加 `area-ivy.cn`。
 5. 确认新站点无误后，再停掉旧服务器。
 
-`frontend/public/_redirects` 已处理 Vue Router 的页面刷新规则，不需要配置 Nginx。
+Vue Router 的页面刷新由部署配置中的 SPA 回退规则处理，不需要配置 Nginx。
 
 ### 新版 Workers Builds 界面
 
