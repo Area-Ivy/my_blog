@@ -1,5 +1,5 @@
 <template>
-	<div class="hidden lg:flex lg:flex-col fixed left-0 bottom-0 w-52 xl:w-56 border-t border-white/10 bg-white/5 backdrop-blur px-3 pt-4 pb-4 z-10">
+	<div class="music-dock hidden lg:flex lg:flex-col fixed left-0 bottom-0 w-52 xl:w-56 border-t border-white/10 bg-white/5 backdrop-blur px-3 pt-4 pb-4 z-10">
 		<!-- 加载状态 -->
 		<div v-if="loadingSongs" class="flex items-center justify-center py-8 text-white/60 text-sm">
 			加载歌曲中...
@@ -584,6 +584,45 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.music-dock {
+	left: 24px;
+	bottom: 24px;
+	width: 312px;
+	min-height: 82px;
+	padding: 12px 14px;
+	display: flex !important;
+	flex-direction: row;
+	align-items: center;
+	gap: 14px;
+	color: #fff;
+	background: rgba(24, 33, 47, .94);
+	border: 1px solid rgba(255, 255, 255, .12);
+	border-radius: 18px;
+	box-shadow: 0 18px 45px rgba(17, 24, 39, .22);
+	backdrop-filter: blur(18px);
+}
+
+.music-dock > .flex.flex-col.items-center.mb-4 {
+	min-width: 0;
+	flex: 1;
+	align-items: flex-start;
+	margin: 0;
+}
+
+.music-dock > .flex.flex-col.items-center.mb-4 > .relative.mb-3 { display: none; }
+.music-dock > .flex.flex-col.items-center.mb-4 > .text-center { padding: 0; text-align: left; }
+.music-dock > .flex.flex-col.gap-2 { width: 116px; flex: 0 0 116px; padding: 0; }
+.music-dock > .flex.flex-col.gap-2 > .flex.items-center.justify-between,
+.music-dock > .flex.flex-col.gap-2 > .flex.items-center.gap-2 { display: none; }
+.music-dock > .flex.flex-col.gap-2 > .relative { order: 2; }
+.music-dock > .flex.flex-col.gap-2 > .flex.items-center.justify-center { order: 1; }
+
+@media (max-width: 1023px) {
+	.music-dock {
+		display: none !important;
+	}
+}
+
 @keyframes rotate {
 	from {
 		transform: rotate(0deg);
