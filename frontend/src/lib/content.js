@@ -2,6 +2,11 @@ import toolsData from '@/content/tools.json';
 import footprintsData from '@/content/footprints.json';
 import songsData from '@/content/songs.json';
 
+const withBase = (value) => {
+	if (!value || !value.startsWith('/')) return value;
+	return `${import.meta.env.BASE_URL}${value.slice(1)}`;
+};
+
 const articleFiles = import.meta.glob('../content/articles/*.md', {
 	eager: true,
 	query: '?raw',
@@ -44,9 +49,21 @@ export const articles = Object.entries(articleFiles)
 	.map(([sourcePath, source]) => parseArticle(source, sourcePath))
 	.sort((a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0));
 
-export const tools = toolsData;
-export const footprints = footprintsData;
-export const songs = songsData;
+export const tools = toolsData.map((tool) => ({
+	...tool,
+	logo: withBase(tool.logo),
+}));
+
+export const footprints = footprintsData.map((footprint) => ({
+	...footprint,
+	images: (footprint.images || []).map(withBase),
+}));
+
+export const songs = songsData.map((song) => ({
+	...song,
+	url: withBase(song.url),
+	cover: withBase(song.cover),
+}));
 
 export function searchArticles(query) {
 	const terms = String(query || '').trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);

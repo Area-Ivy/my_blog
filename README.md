@@ -44,6 +44,18 @@ Vue Router 的页面刷新由部署配置中的 SPA 回退规则处理，不需�
 
 项目名称需要保持为 `area-ivy-blog`。`wrangler.jsonc` 已将 `frontend/dist` 配置为静态资源目录，并为 Vue Router 开启 SPA 回退。
 
+## 发布到 GitHub Pages
+
+仓库包含 `.github/workflows/deploy-github-pages.yml`，推送到 `main` 后会自动构建并发布。
+
+首次使用时，在 GitHub 仓库中打开 **Settings → Pages**，将 **Source** 设置为 **GitHub Actions**。发布地址为：
+
+```text
+https://area-ivy.github.io/my_blog/
+```
+
+GitHub Pages 构建会自动使用 `/my_blog/` 资源前缀和 Hash 路由；Cloudflare 或本地构建仍然使用根路径和常规 History 路由。
+
 ## 发布文章
 
 在 `frontend/src/content/articles/` 新建 Markdown 文件：
