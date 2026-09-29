@@ -1,56 +1,114 @@
 <template>
-  <div class="site-page">
-    <SiteHeader />
-    <main class="page-main">
-      <header class="page-header">
-        <p class="page-kicker">Curated stack</p>
-        <h1 class="page-title page-title--small">工具，不必多，但要顺手。</h1>
-        <p class="page-lead">我在开发和创作中持续使用的工具、组件库与云服务。</p>
-      </header>
-
-      <section class="tools-grid" aria-label="工具列表">
-        <button v-for="(tool, index) in tools" :key="tool.id" type="button" class="tool-card surface card-link" @click="handleNavigate(tool.link)">
-          <div class="tool-card__top">
-            <div class="tool-logo">
-              <img v-if="tool.logo" :src="tool.logo" :alt="`${tool.name} 标志`" loading="lazy" />
-              <span v-else>{{ tool.name[0] }}</span>
-            </div>
-            <span class="tool-index">{{ String(index + 1).padStart(2, '0') }}</span>
-          </div>
-          <div>
-            <h2>{{ tool.name }}</h2>
-            <p>{{ tool.description }}</p>
-            <div class="tool-tags"><span v-for="tag in tool.tags" :key="tag" class="pill">{{ tag }}</span></div>
-          </div>
-          <span class="tool-link">访问网站 <span aria-hidden="true">↗</span></span>
-        </button>
-      </section>
-    </main>
-  </div>
+	<div class="min-h-screen w-full overflow-x-hidden text-white relative">
+		<SiteHeader />
+		<div class="flex pt-[2.75rem] md:pt-[3.75rem]">
+			<SideNav />
+			<main class="flex-1 pt-6 px-6 md:px-8 lg:ml-52 lg:px-10 xl:ml-56 xl:px-12 h-[calc(100vh-2.75rem)] md:h-[calc(100vh-3.75rem)] overflow-y-auto">
+				<ClientOnly>
+					<BlurReveal
+						:delay="0.1"
+						:duration="0.75"
+						class="max-w-5xl"
+					>
+						<div>
+							<h1 class="text-2xl font-bold md:text-4xl">工具</h1>
+							<p class="mt-3 text-white/80 md:text-base">这里将收纳常用的在线工具、组件库和云平台。</p>
+							<div class="mt-6 min-h-[200px]">
+								<div
+									v-if="loading"
+									class="rounded-2xl border border-white/10 bg-white/5 p-6 text-center text-white/70"
+								>
+									正在加载工具...
+								</div>
+								<div
+									v-else-if="errorMessage"
+									class="rounded-2xl border border-red-500/30 bg-red-500/10 p-5 text-center text-sm text-red-200"
+								>
+									{{ errorMessage }}
+								</div>
+								<div
+									v-else-if="tools.length === 0"
+									class="rounded-2xl border border-white/10 bg-white/5 p-6 text-center text-white/60"
+								>
+									暂无工具，敬请期待。
+								</div>
+								<div v-else class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+									<button
+										v-for="tool in tools"
+										:key="tool.id"
+										type="button"
+										class="group flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 text-left transition hover:-translate-y-1 hover:border-white/30 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/60"
+										@click="handleNavigate(tool.link)"
+									>
+									<div class="flex items-center gap-3">
+										<div class="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-white/10 to-white/5 shadow-lg ring-1 ring-white/10 transition-transform group-hover:scale-105">
+											<img
+												v-if="tool.logo"
+												:src="tool.logo"
+												:alt="tool.name"
+												class="h-full w-full object-cover"
+												loading="lazy"
+											/>
+											<span v-else class="text-xl font-semibold text-white/90">{{ tool.name[0] }}</span>
+										</div>
+										<div class="flex flex-col gap-2">
+											<p class="text-lg font-semibold">{{ tool.name }}</p>
+											<div class="flex flex-wrap gap-2">
+												<span
+													v-for="tag in tool.tags"
+													:key="tag"
+													class="rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-xs text-white/70"
+												>
+													{{ tag }}
+												</span>
+											</div>
+										</div>
+										</div>
+										<p class="text-sm leading-relaxed text-white/70">
+											{{ tool.description }}
+										</p>
+										<span class="text-sm font-medium text-white/70 transition group-hover:text-white">
+											了解更多 →
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</BlurReveal>
+				</ClientOnly>
+			</main>
+		</div>
+	</div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import SiteHeader from '@/components/SiteHeader.vue';
+import SideNav from '@/components/SideNav.vue';
+import ClientOnly from '@/components/ClientOnly.vue';
+import BlurReveal from '@/components/BlurReveal.vue';
 import { tools as staticTools } from '@/lib/content';
 
-const parseTags = (value) => Array.isArray(value) ? value : (value || '').split(',').map(tag => tag.trim()).filter(Boolean);
-const tools = ref(staticTools.map(tool => ({ ...tool, tags: parseTags(tool.tags) })));
-const handleNavigate = (link) => { if (link) window.open(link, '_blank', 'noopener,noreferrer'); };
+const tools = ref(staticTools);
+const loading = ref(false);
+const errorMessage = ref('');
+
+const parseTags = value => {
+	if (Array.isArray(value)) return value;
+	return (value || '')
+		.split(',')
+		.map(tag => tag.trim())
+		.filter(Boolean);
+};
+
+tools.value = tools.value.map(tool => ({ ...tool, tags: parseTags(tool.tags) }));
+
+const handleNavigate = (link) => {
+	if (!link) return;
+	window.open(link, '_blank', 'noreferrer');
+};
 </script>
 
 <style scoped>
-.page-header { padding-bottom: 56px; border-bottom: 1px solid var(--line); }
-.tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
-.tool-card { min-height: 360px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; color: var(--ink); text-align: left; }
-.tool-card__top { display: flex; justify-content: space-between; align-items: start; }
-.tool-logo { display: grid; width: 58px; height: 58px; place-items: center; overflow: hidden; color: #fff; background: var(--ink); border-radius: 15px; font-size: 22px; font-weight: 700; }
-.tool-logo img { width: 100%; height: 100%; object-fit: cover; }
-.tool-index { color: var(--ink-muted); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
-.tool-card h2 { margin: 36px 0 10px; font-size: 24px; letter-spacing: -.03em; }
-.tool-card p { margin: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.65; }
-.tool-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
-.tool-link { margin-top: 28px; color: var(--accent-dark); font-size: 14px; font-weight: 650; }
-@media (max-width: 900px) { .tools-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .tools-grid { grid-template-columns: 1fr; } .tool-card { min-height: 320px; } }
 </style>
+

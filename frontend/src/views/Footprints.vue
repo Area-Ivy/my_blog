@@ -1,98 +1,356 @@
 <template>
-  <div class="site-page">
-    <SiteHeader />
-    <main class="page-main">
-      <header class="footprints-intro">
-        <div><p class="page-kicker">Places & moments</p><h1 class="page-title page-title--small">走过的地方，<br />留住的片刻。</h1></div>
-        <p>有些记忆适合用文字解释，有些只需要一张照片和当时的日期。</p>
-      </header>
+	<div class="min-h-screen w-full overflow-x-hidden text-white relative">
+		<SiteHeader />
+		<div class="flex pt-[2.75rem] md:pt-[3.75rem]">
+			<SideNav />
+			<main class="flex-1 pt-6 px-6 md:px-8 lg:ml-52 lg:px-10 xl:ml-56 xl:px-12 h-[calc(100vh-2.75rem)] md:h-[calc(100vh-3.75rem)] overflow-y-auto footprints-scroll">
+				<ClientOnly>
+					<BlurReveal
+						:delay="0.1"
+						:duration="0.75"
+						class="flex flex-col gap-10 max-w-6xl"
+					>
+						<section>
+							<div class="flex flex-col gap-3">
+								<h1 class="text-2xl font-bold md:text-4xl">足迹</h1>
+								<p class="text-white/75 md:text-base">
+									记录那些值得纪念的瞬间。
+								</p>
+							</div>
+						</section>
 
-      <section class="timeline" aria-label="足迹时间轴">
-        <div v-for="yearGroup in timeline" :key="yearGroup.year" class="year-group">
-          <div class="year-label"><span>{{ yearGroup.year }}</span><small>{{ yearGroup.items.length }} entries</small></div>
-          <div class="year-items">
-            <article v-for="item in yearGroup.items" :key="item.id" class="footprint-card surface">
-              <header><time>{{ item.date }}</time><span v-if="item.type" class="pill">{{ item.type }}</span></header>
-              <h2>{{ item.title }}</h2>
-              <p v-if="item.location" class="location">{{ item.location }}</p>
-              <p v-if="item.description" class="description">{{ item.description }}</p>
-              <ul v-if="item.highlights?.length"><li v-for="highlight in item.highlights" :key="highlight">{{ highlight }}</li></ul>
-              <ExpandableGallery v-if="item.images?.length" :images="item.images" :onImageClick="(image, index, allImages) => openImageModal(image, allImages)" :should-load="shouldLoadItem(item.id)" @images-loaded="() => handleGalleryLoaded(item.id)" class="gallery" />
-            </article>
-          </div>
-        </div>
-      </section>
-    </main>
+						<section v-if="loading" class="space-y-10">
+							<div class="rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur text-center">
+								<p class="text-white/60">加载中...</p>
+							</div>
+						</section>
 
-    <Transition name="fade">
-      <div v-if="imageModal.visible" class="lightbox" role="dialog" aria-modal="true" aria-label="图片预览" @click="closeImageModal">
-        <button class="lightbox__close" type="button" aria-label="关闭预览" @click="closeImageModal">×</button>
-        <button v-if="imageModal.currentIndex > 0" class="lightbox__nav lightbox__nav--prev" type="button" aria-label="上一张" @click.stop="prevImage">←</button>
-        <img :src="imageModal.currentImage" alt="足迹照片预览" @click.stop />
-        <button v-if="imageModal.currentIndex < imageModal.allImages.length - 1" class="lightbox__nav lightbox__nav--next" type="button" aria-label="下一张" @click.stop="nextImage">→</button>
-        <span class="lightbox__count">{{ imageModal.currentIndex + 1 }} / {{ imageModal.allImages.length }}</span>
-      </div>
-    </Transition>
-  </div>
+						<section v-else-if="errorMessage" class="space-y-10">
+							<div class="rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur text-center">
+								<p class="text-white/60">{{ errorMessage }}</p>
+							</div>
+						</section>
+
+						<section v-else-if="timeline.length === 0" class="space-y-10">
+							<div class="rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur text-center">
+								<p class="text-white/60">暂无足迹记录</p>
+							</div>
+						</section>
+
+						<section v-else class="space-y-10">
+							<div
+								v-for="yearGroup in timeline"
+								:key="yearGroup.year"
+								class="space-y-5"
+							>
+								<div class="flex items-center gap-3">
+									<h2 class="text-3xl font-bold text-white/90 tracking-wide">
+										{{ yearGroup.year }}
+									</h2>
+									<div class="h-px flex-1 bg-white/10"></div>
+								</div>
+								<article
+										v-for="item in yearGroup.items"
+										:key="item.id"
+										class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur transition hover:border-white/20 hover:bg-white/8"
+									>
+										<div class="flex flex-wrap items-center gap-3 text-sm text-white/60">
+											<span class="rounded-full border border-white/15 px-3 py-1">{{ item.date }}</span>
+											<span v-if="item.location" class="flex items-center gap-1">
+												<span class="i-lucide-map-pin h-4 w-4 text-white/50"></span>
+												{{ item.location }}
+											</span>
+											<span v-if="item.type" class="rounded-full bg-white/10 px-3 py-1 text-white/70">
+												{{ item.type }}
+											</span>
+										</div>
+										<h2 class="mt-4 flex items-center gap-2 text-xl font-semibold text-white">
+											<svg
+												v-if="item.showTitleLogo"
+												class="w-6 h-6 flex-shrink-0"
+												viewBox="1 2 23 22"
+											>
+												<path
+													d="M12 22c3.5-4.5 6-8.19 6-11.25A6 6 0 0012 4a6 6 0 00-6 6.75C6 13.81 8.5 17.5 12 22z"
+													fill="#fff"
+													stroke="#000"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													stroke-width="1.6"
+												/>
+												<circle
+													cx="12"
+													cy="10.5"
+													r="2.8"
+													fill="#fff"
+													stroke="#000"
+													stroke-width="1.6"
+												/>
+											</svg>
+											<span>{{ item.title }}</span>
+										</h2>
+										<p class="mt-2 text-sm leading-6 text-white/70">
+											{{ item.description }}
+										</p>
+										<ul
+											v-if="item.highlights?.length"
+											class="mt-4 space-y-2 text-sm text-white/65"
+										>
+											<li
+												v-for="highlight in item.highlights"
+												:key="highlight"
+												class="flex items-start gap-2"
+											>
+												<span class="mt-1 h-1.5 w-1.5 rounded-full bg-blue-400/80"></span>
+												<span>{{ highlight }}</span>
+											</li>
+										</ul>
+										<div
+											v-if="item.images?.length"
+											class="mt-4"
+										>
+											<ExpandableGallery
+												:images="item.images"
+												:onImageClick="(image, index, allImages) => openImageModal(image, allImages)"
+												:should-load="shouldLoadItem(item.id)"
+												@images-loaded="() => handleGalleryLoaded(item.id)"
+												class="h-32 md:h-40"
+											/>
+										</div>
+									</article>
+							</div>
+						</section>
+						<br>
+
+					</BlurReveal>
+				</ClientOnly>
+			</main>
+		</div>
+
+		<!-- 图片预览模态框 -->
+		<Transition name="fade">
+			<div
+				v-if="imageModal.visible"
+				class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+				@click="closeImageModal"
+			>
+				<div class="relative max-w-7xl max-h-[90vh] w-full h-full flex items-center justify-center p-4">
+					<button
+						@click="closeImageModal"
+						class="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 hover:bg-white/20 transition-colors"
+						aria-label="关闭"
+					>
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
+					<button
+						v-if="imageModal.currentIndex > 0"
+						@click.stop="prevImage"
+						class="absolute left-4 z-10 rounded-full bg-white/10 p-3 hover:bg-white/20 transition-colors"
+						aria-label="上一张"
+					>
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+						</svg>
+					</button>
+					<button
+						v-if="imageModal.currentIndex < imageModal.allImages.length - 1"
+						@click.stop="nextImage"
+						class="absolute right-4 z-10 rounded-full bg-white/10 p-3 hover:bg-white/20 transition-colors"
+						aria-label="下一张"
+					>
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+						</svg>
+					</button>
+					<img
+						:src="imageModal.currentImage"
+						alt="预览图片"
+						class="max-w-full max-h-full object-contain"
+						@click.stop
+					/>
+					<div
+						v-if="imageModal.allImages.length > 1"
+						class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 px-4 py-2 rounded-full text-sm text-white/80"
+					>
+						{{ imageModal.currentIndex + 1 }} / {{ imageModal.allImages.length }}
+					</div>
+				</div>
+			</div>
+		</Transition>
+	</div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
 import SiteHeader from '@/components/SiteHeader.vue';
+import SideNav from '@/components/SideNav.vue';
+import ClientOnly from '@/components/ClientOnly.vue';
+import BlurReveal from '@/components/BlurReveal.vue';
 import ExpandableGallery from '@/components/ExpandableGallery.vue';
 import { footprints as staticFootprints } from '@/lib/content';
 
 const footprints = ref(staticFootprints);
-const imageModal = ref({ visible: false, currentImage: '', allImages: [], currentIndex: 0 });
-const timeline = computed(() => {
-  const grouped = {};
-  footprints.value.forEach((item, index) => {
-    const date = new Date(item.date);
-    const year = String(date.getFullYear());
-    const formatted = `${year}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-    const rawTitle = String(item.title || '').trim();
-    (grouped[year] ||= []).push({ ...item, id: `${year}-${index}`, date: formatted, title: rawTitle.startsWith('-') ? rawTitle.slice(1).trim() : rawTitle, highlights: item.highlights || [], images: item.images || [] });
-  });
-  return Object.keys(grouped).sort((a, b) => Number(b) - Number(a)).map(year => ({ year, items: grouped[year] }));
+const loading = ref(false);
+const errorMessage = ref('');
+const imageModal = ref({
+	visible: false,
+	currentImage: '',
+	allImages: [],
+	currentIndex: 0,
 });
-const completedItemIds = ref([]);
-const orderedItemIds = computed(() => timeline.value.flatMap(group => group.items.filter(item => item.images?.length).map(item => item.id)));
-const shouldLoadItem = (id) => { const index = orderedItemIds.value.indexOf(id); return index < 0 || index <= completedItemIds.value.length; };
-function handleGalleryLoaded(id) { if (!completedItemIds.value.includes(id)) completedItemIds.value = [...completedItemIds.value, id]; }
-watch(orderedItemIds, () => { completedItemIds.value = []; });
 
-function openImageModal(image, allImages) { imageModal.value = { visible: true, currentImage: image, allImages, currentIndex: allImages.indexOf(image) }; document.body.style.overflow = 'hidden'; }
-function closeImageModal() { imageModal.value.visible = false; document.body.style.overflow = ''; }
-function nextImage() { const next = imageModal.value.currentIndex + 1; if (next < imageModal.value.allImages.length) { imageModal.value.currentIndex = next; imageModal.value.currentImage = imageModal.value.allImages[next]; } }
-function prevImage() { const prev = imageModal.value.currentIndex - 1; if (prev >= 0) { imageModal.value.currentIndex = prev; imageModal.value.currentImage = imageModal.value.allImages[prev]; } }
-function handleKeydown(event) { if (!imageModal.value.visible) return; if (event.key === 'Escape') closeImageModal(); if (event.key === 'ArrowRight') nextImage(); if (event.key === 'ArrowLeft') prevImage(); }
-onMounted(() => window.addEventListener('keydown', handleKeydown));
-onUnmounted(() => { window.removeEventListener('keydown', handleKeydown); document.body.style.overflow = ''; });
+// 将足迹数据按年份分组
+const timeline = computed(() => {
+	const grouped = {};
+	let orderCounter = 0;
+	
+	footprints.value.forEach((item) => {
+		const date = new Date(item.date);
+		const year = date.getFullYear().toString();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		
+		if (!grouped[year]) {
+			grouped[year] = [];
+		}
+		
+		const rawTitle = item.title || '';
+		const trimmedTitle = typeof rawTitle === 'string' ? rawTitle.trimStart() : '';
+		const showTitleLogo = trimmedTitle.startsWith('-');
+		const normalizedTitle = showTitleLogo ? trimmedTitle.slice(1).trimStart() : rawTitle;
+		const itemId = `${year}-${month}-${day}-${orderCounter}`;
+		orderCounter++;
+		
+		grouped[year].push({
+			id: itemId,
+			date: `${year}-${month}-${day}`,
+			title: normalizedTitle,
+			showTitleLogo,
+			description: item.description || '',
+			type: item.type || null,
+			location: item.location || null,
+			highlights: item.highlights || [],
+			images: item.images || [],
+		});
+	});
+	
+	// 转换为数组格式，按年份降序排列
+	return Object.keys(grouped)
+		.sort((a, b) => parseInt(b) - parseInt(a))
+		.map((year) => ({
+			year,
+			items: grouped[year],
+		}));
+});
+
+const completedItemIds = ref([]);
+const orderedItemIds = computed(() =>
+	timeline.value.flatMap((group) =>
+		group.items
+			.filter((item) => item.images?.length)
+			.map((item) => item.id),
+	),
+);
+
+const shouldLoadItem = (itemId) => {
+	const order = orderedItemIds.value;
+	if (!order.length) return true;
+	const targetIndex = order.indexOf(itemId);
+	if (targetIndex === -1) return true;
+	return targetIndex <= completedItemIds.value.length;
+};
+
+function handleGalleryLoaded(itemId) {
+	if (!completedItemIds.value.includes(itemId)) {
+		completedItemIds.value = [...completedItemIds.value, itemId];
+	}
+}
+
+watch(orderedItemIds, () => {
+	completedItemIds.value = [];
+});
+
+function openImageModal(image, allImages) {
+	imageModal.value.currentImage = image;
+	imageModal.value.allImages = allImages;
+	imageModal.value.currentIndex = allImages.indexOf(image);
+	imageModal.value.visible = true;
+	document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+	imageModal.value.visible = false;
+	document.body.style.overflow = '';
+}
+
+function nextImage() {
+	if (imageModal.value.currentIndex < imageModal.value.allImages.length - 1) {
+		imageModal.value.currentIndex++;
+		imageModal.value.currentImage = imageModal.value.allImages[imageModal.value.currentIndex];
+	}
+}
+
+function prevImage() {
+	if (imageModal.value.currentIndex > 0) {
+		imageModal.value.currentIndex--;
+		imageModal.value.currentImage = imageModal.value.allImages[imageModal.value.currentIndex];
+	}
+}
+
+function handleKeydown(e) {
+	if (!imageModal.value.visible) return;
+	if (e.key === 'Escape') {
+		closeImageModal();
+	} else if (e.key === 'ArrowRight') {
+		nextImage();
+	} else if (e.key === 'ArrowLeft') {
+		prevImage();
+	}
+}
+
+onMounted(() => {
+	window.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+	window.removeEventListener('keydown', handleKeydown);
+});
 </script>
 
 <style scoped>
-.footprints-intro { display: grid; grid-template-columns: 1fr 360px; gap: 64px; align-items: end; padding-bottom: 56px; border-bottom: 1px solid var(--line); }
-.footprints-intro > p { margin: 0; color: var(--ink-soft); font-size: 18px; line-height: 1.7; }
-.timeline { margin-top: 48px; }
-.year-group { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 32px; padding: 40px 0; border-bottom: 1px solid var(--line); }
-.year-label { position: sticky; top: 90px; height: fit-content; }
-.year-label span { display: block; font-size: 36px; font-weight: 720; letter-spacing: -.045em; }
-.year-label small { color: var(--ink-muted); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
-.year-items { display: grid; gap: 16px; }
-.footprint-card { padding: 28px; }
-.footprint-card header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.footprint-card time { color: var(--accent-dark); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
-.footprint-card h2 { margin: 22px 0 4px; font-size: clamp(24px, 3vw, 34px); letter-spacing: -.035em; }
-.location { margin: 0; color: var(--ink-muted); font-size: 13px; }
-.description { max-width: 760px; margin: 18px 0 0; color: var(--ink-soft); }
-.footprint-card ul { padding-left: 20px; color: var(--ink-soft); }
-.gallery { height: 210px; margin-top: 24px; overflow: hidden; border-radius: 13px; }
-.lightbox { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 64px; color: #fff; background: rgba(10,14,20,.94); backdrop-filter: blur(16px); }
-.lightbox img { max-width: 100%; max-height: calc(100vh - 120px); object-fit: contain; border-radius: 10px; }
-.lightbox button { position: absolute; display: grid; width: 48px; height: 48px; place-items: center; color: #fff; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.15); border-radius: 50%; font-size: 22px; }
-.lightbox__close { top: 22px; right: 22px; }.lightbox__nav { top: 50%; transform: translateY(-50%); }.lightbox__nav--prev { left: 22px; }.lightbox__nav--next { right: 22px; }
-.lightbox__count { position: absolute; bottom: 22px; padding: 6px 12px; background: rgba(0,0,0,.35); border-radius: 999px; font-size: 12px; }
-.fade-enter-active, .fade-leave-active { transition: opacity .2s ease; }.fade-enter-from, .fade-leave-to { opacity: 0; }
-@media (max-width: 800px) { .footprints-intro { grid-template-columns: 1fr; gap: 24px; } .year-group { grid-template-columns: 1fr; gap: 18px; } .year-label { position: static; } .year-items { min-width: 0; } }
-@media (max-width: 520px) { .footprint-card { padding: 20px; } .gallery { height: 150px; } .lightbox { padding: 70px 16px; } .lightbox__nav--prev { left: 8px; }.lightbox__nav--next { right: 8px; } }
+.i-lucide-map-pin::before {
+	content: '📍';
+	display: inline-block;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
+
+.footprints-scroll::-webkit-scrollbar {
+	width: 6px;
+}
+
+.footprints-scroll::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.05);
+	border-radius: 3px;
+}
+
+.footprints-scroll::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 3px;
+}
+
+.footprints-scroll::-webkit-scrollbar-thumb:hover {
+	background: rgba(255, 255, 255, 0.3);
+}
 </style>
+

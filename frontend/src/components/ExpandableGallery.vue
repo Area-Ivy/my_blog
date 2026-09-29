@@ -5,12 +5,7 @@
       :key="image"
       :class="itemClass"
       :style="getItemStyle(index)"
-	  role="button"
-	  tabindex="0"
-	  :aria-label="`查看第 ${index + 1} 张图片`"
       @click="handleImageClick(image, index)"
-	  @keydown.enter="handleImageClick(image, index)"
-	  @keydown.space.prevent="handleImageClick(image, index)"
       @mouseenter="hoveredIndex = index"
       @mouseleave="hoveredIndex = -1"
     >
@@ -18,8 +13,7 @@
         v-if="loadedImages.has(image)"
         class="relative h-full w-full object-cover"
         :src="image"
-		:alt="`足迹照片 ${index + 1}`"
-		loading="lazy"
+        :alt="image"
       />
       <div
         v-else

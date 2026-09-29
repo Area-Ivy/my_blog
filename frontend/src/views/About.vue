@@ -1,75 +1,342 @@
 <template>
-  <div class="site-page">
-    <SiteHeader />
-    <main class="page-main">
-      <section class="about-hero">
-        <div class="about-photo"><img src="/avatar.png" alt="Area-Ivy 的头像" /></div>
-        <div>
-          <p class="page-kicker">About me</p>
-          <h1 class="page-title page-title--small">你好，我是 Area—Ivy。</h1>
-          <p class="page-lead">同济大学软件工程专业，关注后端开发、系统设计与 AI Agent。也会在这里记录音乐、旅行和持续学习的过程。</p>
-          <div class="about-actions">
-            <a class="primary-button" href="mailto:chenyiming12500@gmail.com">邮件联系</a>
-            <a class="secondary-button" href="https://github.com/Area-Ivy" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-          </div>
-        </div>
-      </section>
+	<div class="min-h-screen w-full overflow-x-hidden text-white relative">
+		<SiteHeader />
+		<div class="flex pt-[2.75rem] md:pt-[3.75rem]">
+			<SideNav />
+			<main class="home-scroll flex-1 pt-8 px-6 md:px-8 lg:ml-52 lg:px-10 xl:ml-56 xl:px-12 h-[calc(100vh-2.75rem)] md:h-[calc(100vh-3.75rem)] overflow-y-auto">
+				<ClientOnly>
+					<div class="flex flex-col gap-6 max-w-6xl w-full pb-12">
+						<!-- 顶部头像和信息区域 (GitHub 风格) -->
+						<BlurReveal
+							:delay="0.1"
+							:duration="0.75"
+							class="w-full"
+						>
+							<div class="flex flex-col sm:flex-row items-start gap-6 pb-6 border-b border-white/10">
+								<!-- 头像 -->
+								<div class="relative flex-shrink-0 avatar-wrapper">
+									<div class="avatar-glow"></div>
+									<div class="avatar-ring"></div>
+									<div class="avatar-orbit avatar-orbit-1"></div>
+									<div class="avatar-orbit avatar-orbit-2"></div>
+									<div
+										class="relative h-32 w-32 rounded-full overflow-hidden border-2 border-white/20 transition-transform duration-300 hover:scale-105 bg-black/20"
+										>
+											<div
+												class="absolute inset-0 bg-[url('/avatar.png')] bg-cover bg-center"
+											></div>
+									</div>
+								</div>
+								
+								<!-- 基本信息 -->
+								<div class="flex-1 space-y-3">
+									<div>
+										<h1 class="text-2xl md:text-3xl font-bold text-white mb-1">
+											Hi there!👋
+											</h1>
+										<p class="text-base text-white/70">
+											后端工程师，嘎啦给木领域大神
+										</p>
+									</div>
+									
+									<!-- 年份进度条 -->
+									<div class="rounded-lg border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+										<div class="flex items-center gap-2 text-sm text-white/80 mb-2">
+											<span>⏳</span>
+											<span>年度进度 {{ progressBarOfThisYear }} {{ progressPercentage }}%</span>
+										</div>
+										<div class="text-xs text-white/50">
+											⏰ 更新于 {{ lastUpdateTime }}
+										</div>
+									</div>
+								</div>
+							</div>
+						</BlurReveal>
 
-      <section class="about-grid section">
-        <article class="about-card surface about-card--wide">
-          <p class="page-kicker">Now</p>
-          <h2>正在做什么</h2>
-          <p>深入工程实践和高性能架构，持续研究 AI Agent，并把可复用的经验整理成文章。</p>
-          <div class="year-progress" role="progressbar" :aria-valuenow="Number(progressPercentage)" aria-valuemin="0" aria-valuemax="100" aria-label="本年度进度">
-            <div :style="{ width: `${progressPercentage}%` }"></div>
-          </div>
-          <span class="progress-label">{{ thisYear }} 已过去 {{ progressPercentage }}%</span>
-        </article>
-        <article class="about-card surface"><p class="page-kicker">Focus</p><h2>关注方向</h2><ul><li>后端与系统设计</li><li>算法与工程效率</li><li>开源和 AI Agent</li></ul></article>
-        <article class="about-card surface"><p class="page-kicker">Elsewhere</p><h2>代码之外</h2><ul><li>音乐与现场</li><li>旅行与摄影</li><li>视觉与产品体验</li></ul></article>
-      </section>
+						<!-- About Me -->
+						<BlurReveal
+							:delay="0.2"
+							:duration="0.75"
+							class="w-full"
+						>
+							<div class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+								<h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+									<span>👨‍💻</span>
+									<span>关于我</span>
+								</h2>
+								<ul class="space-y-3 text-white/80 text-sm leading-relaxed">
+									<li class="flex items-start gap-2">
+										<span class="text-white/60">•</span>
+										<span>🚀 <a href="https://www.tongji.edu.cn" target="_blank" class="text-sky-400 hover:underline">同济大学</a>计算机科学与技术学院，软件工程专业。</span>
+									</li>
+									<li class="flex items-start gap-2">
+										<span class="text-white/60">•</span>
+										<span>🌱 专注于后端开发、算法学习和开源贡献。</span>
+									</li>
+									<li class="flex items-start gap-2">
+										<span class="text-white/60">•</span>
+										<span>🔭 始终热衷于学习新技术，并乐于接受具有挑战性的项目。</span>
+									</li>
+									<li class="flex items-start gap-2">
+										<span class="text-white/60">•</span>
+										<span>📫 邮箱：<a href="mailto:chenyiming12500@gmail.com" class="text-sky-400 hover:underline">chenyiming12500@gmail.com</a></span>
+									</li>
+									<li class="flex items-start gap-2">
+										<span class="text-white/60">•</span>
+										<span>💡 GitHub：<a href="https://github.com/Area-Ivy" target="_blank" class="text-sky-400 hover:underline">https://github.com/Area-Ivy</a></span>
+									</li>
+								</ul>
+							</div>
+						</BlurReveal>
 
-      <section class="section journey">
-        <div class="section-heading"><div><p class="page-kicker">Journey</p><h2>持续向前</h2></div></div>
-        <ol>
-          <li><time>2018</time><div><h3>踏入编程世界</h3><p>开始学习编程，对计算机和创造软件产生兴趣。</p></div></li>
-          <li><time>2024</time><div><h3>深入 Web 开发</h3><p>系统学习前后端技术，完成个人与团队项目。</p></div></li>
-          <li><time>2025 — Now</time><div><h3>探索架构与 AI</h3><p>专注系统设计和工程实践，通过博客分享持续思考。</p></div></li>
-        </ol>
-      </section>
-    </main>
-  </div>
+						<!-- Timeline -->
+						<BlurReveal
+							:delay="0.5"
+							:duration="0.75"
+							class="w-full"
+						>
+							<div class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+								<h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+									<span>📅</span>
+									<span>时间轴</span>
+								</h2>
+								<div class="timeline-container relative space-y-6">
+									<!-- Timeline Item 1 -->
+									<div class="timeline-item group/item relative pl-6">
+										<div
+											class="absolute left-0 top-2 h-3 w-3 rounded-full bg-emerald-400 border-2 border-white/20 transition-all duration-300 group-hover/item:scale-125 group-hover/item:bg-emerald-300"
+										></div>
+										<div class="space-y-1">
+											<p class="text-xs uppercase tracking-wider text-emerald-400/70 font-semibold">
+												2018 - 开始
+											</p>
+											<p class="text-base font-semibold text-white/95">
+												踏入编程世界
+											</p>
+											<p class="text-sm text-white/70 leading-relaxed">
+												开始学习编程，对计算机产生浓厚兴趣。
+											</p>
+										</div>
+									</div>
+
+									<!-- Timeline Item 2 -->
+									<div class="timeline-item group/item relative pl-6">
+										<div
+											class="absolute left-0 top-2 h-3 w-3 rounded-full bg-sky-400 border-2 border-white/20 transition-all duration-300 group-hover/item:scale-125 group-hover/item:bg-sky-300"
+										></div>
+										<div class="space-y-1">
+											<p class="text-xs uppercase tracking-wider text-sky-400/70 font-semibold">
+												2024 - 成长
+											</p>
+											<p class="text-base font-semibold text-white/95">
+												深入学习Web开发
+											</p>
+											<p class="text-sm text-white/70 leading-relaxed">
+												开始系统学习前端和后端技术，完成多个个人与团队项目。
+											</p>
+										</div>
+									</div>
+
+									<!-- Timeline Item 3 -->
+									<div class="timeline-item group/item relative pl-6">
+										<div
+											class="absolute left-0 top-2 h-3 w-3 rounded-full bg-violet-400 border-2 border-white/20 transition-all duration-300 group-hover/item:scale-125 group-hover/item:bg-violet-300"
+										></div>
+										<div class="space-y-1">
+											<p class="text-xs uppercase tracking-wider text-violet-400/70 font-semibold">
+												2025 - 现在
+											</p>
+											<p class="text-base font-semibold text-white/95">
+												探索高性能架构与AI Agent
+											</p>
+											<p class="text-sm text-white/70 leading-relaxed">
+												专注系统设计和工程实践，通过博客分享技术思考。
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</BlurReveal>
+
+					</div>
+				</ClientOnly>
+			</main>
+		</div>
+	</div>
 </template>
 
 <script setup>
 import { computed } from 'vue';
 import SiteHeader from '@/components/SiteHeader.vue';
+import SideNav from '@/components/SideNav.vue';
+import ClientOnly from '@/components/ClientOnly.vue';
+import BlurReveal from '@/components/BlurReveal.vue';
 
+// 年份进度条
 const thisYear = new Date().getFullYear();
-const start = new Date(`${thisYear}-01-01T00:00:00`).getTime();
-const end = new Date(`${thisYear}-12-31T23:59:59`).getTime();
-const progressPercentage = computed(() => Math.min(100, Math.max(0, ((Date.now() - start) / (end - start)) * 100)).toFixed(1));
+const startTimeOfThisYear = new Date(`${thisYear}-01-01T00:00:00+00:00`).getTime();
+const endTimeOfThisYear = new Date(`${thisYear}-12-31T23:59:59+00:00`).getTime();
+const progressOfThisYear = computed(() => {
+	return (Date.now() - startTimeOfThisYear) / (endTimeOfThisYear - startTimeOfThisYear);
+});
+
+const progressBarOfThisYear = computed(() => {
+	const progressBarCapacity = 30;
+	const passedProgressBarIndex = parseInt(progressOfThisYear.value * progressBarCapacity);
+	const progressBar = '▇'.repeat(passedProgressBarIndex) + '▁'.repeat(progressBarCapacity - passedProgressBarIndex);
+	return `[ ${progressBar} ]`;
+});
+
+const progressPercentage = computed(() => {
+	return (progressOfThisYear.value * 100).toFixed(2);
+});
+
+const lastUpdateTime = computed(() => {
+	const date = new Date();
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+	const hours = String(date.getHours()).padStart(2, '0');
+	const minutes = String(date.getMinutes()).padStart(2, '0');
+	return `${year}年${month}月${day}日 ${hours}:${minutes}`;
+});
 </script>
 
 <style scoped>
-.about-hero { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 64px; align-items: center; padding-bottom: 64px; border-bottom: 1px solid var(--line); }
-.about-photo { aspect-ratio: 1; overflow: hidden; background: var(--surface-soft); border-radius: 32px; box-shadow: var(--shadow-md); transform: rotate(-2deg); }
-.about-photo img { width: 100%; height: 100%; object-fit: cover; }
-.about-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-.about-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-.about-card { min-height: 250px; padding: 28px; }
-.about-card--wide { grid-column: 1 / -1; min-height: 300px; }
-.about-card h2 { margin: 0 0 14px; font-size: 28px; letter-spacing: -.03em; }
-.about-card p, .about-card li { color: var(--ink-soft); }
-.about-card ul { margin: 20px 0 0; padding: 0; list-style: none; }
-.about-card li { padding: 9px 0; border-bottom: 1px solid var(--line); }
-.year-progress { height: 8px; margin-top: 52px; overflow: hidden; background: var(--surface-soft); border-radius: 999px; }
-.year-progress div { height: 100%; background: var(--accent); border-radius: inherit; }
-.progress-label { display: block; margin-top: 10px; color: var(--ink-muted); font-size: 12px; }
-.journey ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
-.journey li { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--line); }
-.journey time { color: var(--accent-dark); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-.journey h3 { margin: 0 0 8px; font-size: 21px; }
-.journey p { margin: 0; color: var(--ink-soft); }
-@media (max-width: 720px) { .about-hero { grid-template-columns: 1fr; gap: 36px; } .about-photo { width: 150px; border-radius: 24px; } .about-grid { grid-template-columns: 1fr; } .about-card--wide { grid-column: auto; } .journey li { grid-template-columns: 1fr; gap: 8px; } }
+/* 径向渐变背景 */
+.bg-gradient-radial {
+	background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* 时间轴容器 */
+.timeline-container::before {
+	content: '';
+	position: absolute;
+	left: 5px;
+	top: 8px;
+	bottom: 8px;
+	width: 2px;
+	background: linear-gradient(
+		to bottom,
+		rgba(16, 185, 129, 0.5),
+		rgba(56, 189, 248, 0.5),
+		rgba(129, 140, 248, 0.5)
+	);
+	border-radius: 2px;
+}
+
+
+/* 平滑过渡效果 */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* 增强卡片悬停效果 */
+.group:hover .group-hover\:opacity-100 {
+	opacity: 1;
+}
+
+/* 平滑的光晕效果 */
+@keyframes glow {
+	0%, 100% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 0.8;
+	}
+}
+
+/* 确保渐变文字显示正确 */
+.bg-clip-text {
+	-webkit-background-clip: text;
+	background-clip: text;
+}
+
+/* 头像装饰 */
+.avatar-wrapper {
+	width: 8.5rem;
+	height: 8.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+
+.avatar-glow {
+	position: absolute;
+	inset: -20%;
+	background: radial-gradient(circle, rgba(56, 189, 248, 0.4), rgba(99, 102, 241, 0.15));
+	filter: blur(20px);
+	animation: pulseGlow 6s ease-in-out infinite;
+}
+
+.avatar-ring {
+	position: absolute;
+	inset: -10px;
+	border-radius: 9999px;
+	border: 2px dashed rgba(255, 255, 255, 0.25);
+	animation: spinSlow 14s linear infinite;
+}
+
+.avatar-orbit {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	border-radius: 9999px;
+	background: linear-gradient(135deg, #34d399, #22d3ee);
+	box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
+	animation: orbit 9s linear infinite;
+}
+
+.avatar-orbit-1 {
+	top: -6px;
+	left: 50%;
+	transform-origin: -20px 40px;
+}
+
+.avatar-orbit-2 {
+	bottom: 0;
+	right: -8px;
+	width: 12px;
+	height: 12px;
+	transform-origin: 20px -30px;
+	animation-duration: 12s;
+	background: linear-gradient(135deg, #a855f7, #38bdf8);
+}
+
+@keyframes spinSlow {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes orbit {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes pulseGlow {
+	0%, 100% {
+		opacity: 0.4;
+	}
+	50% {
+		opacity: 0.9;
+	}
+}
 </style>
+
+
