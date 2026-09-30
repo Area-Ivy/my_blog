@@ -1,5 +1,5 @@
 <template>
-	<div class="hidden lg:flex lg:flex-col fixed left-0 bottom-0 w-52 xl:w-56 border-t border-white/10 bg-white/5 backdrop-blur px-3 pt-4 pb-4 z-10">
+	<div class="music-player hidden lg:flex lg:flex-col fixed left-0 bottom-0 w-52 xl:w-56 border-t border-white/10 bg-white/5 backdrop-blur px-3 pt-4 pb-4 z-10">
 		<!-- 加载状态 -->
 		<div v-if="loadingSongs" class="flex items-center justify-center py-8 text-white/60 text-sm">
 			加载歌曲中...

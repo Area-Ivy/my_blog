@@ -59,11 +59,11 @@ const shouldKeepAlive = computed(() => route.meta?.keepAlive !== false);
 }
 
 .logo-background__base {
-  background: #000;
+  background: var(--theme-page-bg);
 }
 
 .logo-background__glow {
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.14), transparent 60%);
+  background: var(--theme-background-glow);
   opacity: 0.3;
   filter: blur(80px);
 }
@@ -74,7 +74,7 @@ const shouldKeepAlive = computed(() => route.meta?.keepAlive !== false);
   background-position: center;
   background-size: min(65vmin, 560px);
   filter: blur(5px);
-  opacity: 0.55;
+  opacity: var(--theme-logo-opacity);
   transform: scale(1.15);
   mix-blend-mode: screen;
 }

@@ -189,7 +189,9 @@ function draw() {
 
   tick.value++;
 
-  context.fillStyle = props.backgroundColor;
+  context.fillStyle = props.backgroundColor === 'theme'
+    ? getComputedStyle(document.documentElement).getPropertyValue('--theme-page-bg').trim() || '#000000'
+    : props.backgroundColor;
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   for (let i = 0; i < particleProps.value.length; i += PARTICLE_PROP_COUNT) {

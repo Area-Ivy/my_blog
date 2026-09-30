@@ -28,11 +28,44 @@
   --muted:#9aa4b2;
   --accent:#6ee7b7;
   --glass:rgba(255,255,255,0.04)
+
+  --theme-page-bg:#000;
+  --theme-text:#f5f7fa;
+  --theme-text-muted:#c1c7d0;
+  --theme-surface:rgba(255,255,255,0.05);
+  --theme-surface-strong:rgba(15,23,36,0.94);
+  --theme-border:rgba(255,255,255,0.1);
+  --theme-border-strong:rgba(255,255,255,0.2);
+  --theme-header:rgba(0,0,0,0.8);
+  --theme-shadow:rgba(0,0,0,0.3);
+  --theme-accent:#6ee7b7;
+  --theme-background-glow:radial-gradient(circle at center, rgba(255,255,255,0.14), transparent 60%);
+  --theme-logo-opacity:0.55;
+}
+
+html[data-theme="light"] {
+  --theme-page-bg:#f5f5f7;
+  --theme-text:#1d1d1f;
+  --theme-text-muted:#626269;
+  --theme-surface:rgba(255,255,255,0.78);
+  --theme-surface-strong:rgba(255,255,255,0.96);
+  --theme-border:rgba(29,29,31,0.09);
+  --theme-border-strong:rgba(29,29,31,0.16);
+  --theme-header:rgba(250,250,252,0.82);
+  --theme-shadow:rgba(30,35,45,0.1);
+  --theme-accent:#087f5b;
+  --theme-background-glow:radial-gradient(circle at center, rgba(255,255,255,0.94), rgba(231,234,239,0.56) 58%, transparent 76%);
+  --theme-logo-opacity:0.08;
+  --bg:#f5f5f7;
+  --card:#fff;
+  --muted:#626269;
+  --accent:#087f5b;
+  --glass:rgba(255,255,255,0.72);
 }
 *{box-sizing:border-box}
-html,body{min-height:100%;height:auto;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;color:#e6eef6;position:relative;overflow-x:hidden;overflow-y:auto}
+html,body{min-height:100%;height:auto;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;color:var(--theme-text);position:relative;overflow-x:hidden;overflow-y:auto}
 #app{width:100%;min-height:100%;height:auto;margin:0;padding:0}
-body{background:#000}
+body{background:var(--theme-page-bg);transition:background-color .25s ease,color .25s ease}
 a{color:var(--accent);text-decoration:none}
 .container{max-width:1400px;margin:48px auto;padding:24px}
 /* smooth animations baseline */
@@ -186,6 +219,108 @@ input[type="search"]{background:transparent;border:1px solid rgba(255,255,255,0.
 /* reduced motion accessibility */
 @media (prefers-reduced-motion: reduce){
   *{transition:none !important}
+}
+
+/* Light theme compatibility for the existing Tailwind-based interface. */
+html[data-theme="light"] ::selection{background:rgba(8,127,91,0.2);color:#1d1d1f}
+html[data-theme="light"] body::-webkit-scrollbar-track,
+html[data-theme="light"] .home-scroll::-webkit-scrollbar-track{background:rgba(29,29,31,0.04)}
+html[data-theme="light"] body::-webkit-scrollbar-thumb,
+html[data-theme="light"] .home-scroll::-webkit-scrollbar-thumb{background:rgba(29,29,31,0.2)}
+
+html[data-theme="light"] .text-white{color:var(--theme-text)!important}
+html[data-theme="light"] [class*="text-white/"]{color:var(--theme-text-muted)!important}
+html[data-theme="light"] [class*="border-white/"]{border-color:var(--theme-border)!important}
+html[data-theme="light"] [class*="bg-white/"]{background-color:var(--theme-surface)!important}
+html[data-theme="light"] [class*="bg-black/"]{background-color:var(--theme-surface-strong)!important}
+html[data-theme="light"] [class*="shadow-black/"]{--tw-shadow-color:rgba(30,35,45,0.1)!important}
+html[data-theme="light"] input,
+html[data-theme="light"] textarea{color:var(--theme-text)!important}
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder{color:#8a8a91!important}
+
+html[data-theme="light"] .side-nav{
+  color:var(--theme-text)!important;
+  background:rgba(255,255,255,0.62)!important;
+  border-color:var(--theme-border)!important;
+}
+html[data-theme="light"] .side-nav a{color:var(--theme-text-muted)!important}
+html[data-theme="light"] .side-nav a.router-link-active{color:var(--theme-text)!important;background:#fff!important;box-shadow:0 1px 8px rgba(30,35,45,0.07)}
+html[data-theme="light"] .side-nav a:hover{color:var(--theme-text)!important;background:rgba(255,255,255,0.82)!important}
+
+html[data-theme="light"] .music-player{
+  color:#eef2f7!important;
+  background:rgba(17,24,39,0.92)!important;
+  border-color:rgba(255,255,255,0.1)!important;
+}
+html[data-theme="light"] .music-player .text-white{color:#fff!important}
+html[data-theme="light"] .music-player [class*="text-white/"]{color:rgba(255,255,255,0.65)!important}
+html[data-theme="light"] .music-player [class*="bg-white/"]{background-color:rgba(255,255,255,0.1)!important}
+html[data-theme="light"] .music-player [class*="border-white/"]{border-color:rgba(255,255,255,0.13)!important}
+
+html[data-theme="light"] .nav-card,
+html[data-theme="light"] .article-card,
+html[data-theme="light"] .tech-card,
+html[data-theme="light"] .link-card,
+html[data-theme="light"] .post-content-card,
+html[data-theme="light"] .toc-container{
+  color:var(--theme-text)!important;
+  background:rgba(255,255,255,0.76)!important;
+  border-color:var(--theme-border)!important;
+  box-shadow:0 8px 28px rgba(30,35,45,0.06);
+}
+html[data-theme="light"] .nav-card:hover,
+html[data-theme="light"] .article-card:hover,
+html[data-theme="light"] .tech-card:hover,
+html[data-theme="light"] .link-card:hover{background:#fff!important;border-color:var(--theme-border-strong)!important;box-shadow:0 12px 34px rgba(30,35,45,0.11)!important}
+html[data-theme="light"] .site-header img,
+html[data-theme="light"] img[alt="文章"],
+html[data-theme="light"] img[alt="工具"],
+html[data-theme="light"] img[alt="足迹"],
+html[data-theme="light"] img[alt="更新"],
+html[data-theme="light"] img[alt="关于"]{filter:invert(1)}
+html[data-theme="light"] .nav-card button{color:#fff!important}
+html[data-theme="light"] .nav-card button [class*="text-primary-foreground"]{color:#fff!important}
+
+html[data-theme="light"] .post-title,
+html[data-theme="light"] .post-item-title,
+html[data-theme="light"] .post-body,
+html[data-theme="light"] .post-body h1,
+html[data-theme="light"] .post-body h2,
+html[data-theme="light"] .post-body h3,
+html[data-theme="light"] .post-body h4,
+html[data-theme="light"] .post-body h5,
+html[data-theme="light"] .post-body h6,
+html[data-theme="light"] .post-body strong{color:#1d1d1f!important}
+html[data-theme="light"] .post-body p,
+html[data-theme="light"] .post-body li,
+html[data-theme="light"] .post-meta,
+html[data-theme="light"] .post-summary-content{color:#4b4b52!important}
+html[data-theme="light"] .post-item-meta,
+html[data-theme="light"] .post-meta .meta-label{color:#6b6b73!important}
+html[data-theme="light"] .post-header,
+html[data-theme="light"] .post-body h1,
+html[data-theme="light"] .post-body h2,
+html[data-theme="light"] .post-body hr{border-color:var(--theme-border)!important}
+html[data-theme="light"] .post-summary-content{background:rgba(8,127,91,0.06)!important;border-left-color:rgba(8,127,91,0.55)!important}
+html[data-theme="light"] .post-item:hover{background:rgba(29,29,31,0.04)!important}
+html[data-theme="light"] .post-item.active{background:rgba(8,127,91,0.09)!important;border-color:rgba(8,127,91,0.25)!important;box-shadow:none!important}
+html[data-theme="light"] .post-body code{color:#075985!important;background:#e8f2f7!important}
+html[data-theme="light"] .post-body pre{color:#e6eef6!important;background:#172033!important;border-color:#26334b!important}
+html[data-theme="light"] .post-body pre code{color:#e6eef6!important;background:transparent!important}
+html[data-theme="light"] .post-body blockquote{color:#555b66!important;background:rgba(29,29,31,0.025)!important}
+html[data-theme="light"] .post-body th{color:#1d1d1f!important;background:#f0f1f3!important}
+html[data-theme="light"] .post-body th,
+html[data-theme="light"] .post-body td,
+html[data-theme="light"] .post-body table{border-color:var(--theme-border-strong)!important}
+
+html[data-theme="light"] .tag{color:#4b4b52!important;background:#eef0f2!important}
+html[data-theme="light"] .search-dropdown{background:rgba(255,255,255,0.98)!important;border-color:var(--theme-border)!important;box-shadow:0 20px 45px rgba(30,35,45,0.14)!important}
+html[data-theme="light"] .search-result-item{border-color:var(--theme-border)!important}
+html[data-theme="light"] .search-result-item:hover{background:#f2f3f5!important}
+
+@media (prefers-color-scheme: light){
+  html:not([data-theme]){color-scheme:light}
 }
 
 
