@@ -1,5 +1,5 @@
 <template>
-	<aside class="side-nav hidden lg:flex lg:flex-col lg:w-52 xl:w-56 border-r border-white/10 bg-white/5 backdrop-blur text-sm text-white fixed left-0 top-[3.5rem] md:top-[4.5rem] h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4.5rem)]">
+	<aside class="hidden lg:flex lg:flex-col lg:w-52 xl:w-56 border-r border-white/10 bg-white/5 backdrop-blur text-sm text-white fixed left-0 top-[3.5rem] md:top-[4.5rem] h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4.5rem)]">
 		<nav class="flex flex-col gap-0.5 flex-1">
 			<RouterLink
 				to="/home"
@@ -68,4 +68,5 @@ nav :deep(a) {
 	width: 100%;
 }
 </style>
+
 

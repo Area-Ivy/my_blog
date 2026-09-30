@@ -2,7 +2,7 @@
   <div class="h-screen w-full overflow-hidden relative">
     <SiteHeader />
     <Vortex
-      background-color="theme"
+      background-color="black"
       :range-y="800"
       :particle-count="500"
       :base-hue="120"
